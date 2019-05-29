@@ -1,5 +1,5 @@
 # LenodeJS
-LenodeJS allows you to code completely on JS, no hmtl, css or actual DOM, but a virtual tree.
+LenodeJS allows you to create web applications coding completely on JS, no hmtl, css or actual DOM, but a virtual tree.
 
 Create DOM elements as Lenodes passing a **model object** and a **style object**:
 ```js
