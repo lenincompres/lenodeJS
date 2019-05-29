@@ -1,7 +1,4 @@
 # lenodeJS
-Lenino's JS framework
-
-## The Basics
 LenodeJS allows you to code completely on JS, no hmtl, css or actual DOM, but a virtual tree.
 
 Create DOM elements as Lenodes passing a **model object** and a **style object**:
