@@ -35,7 +35,7 @@ var app = Lenode.app({
   icon: 'assets/images/icon',
   styles: ['reset.css'],
   scripts: ['auxiliary.js'],
-  //Pages may be existing Lenodes, Classes extending Lenode or model objects to be turned into a Lenode
+  //Pages may be existing Lenodes, Classes extending Lenode or model objects to be turned Lenodes
   pages: {
     home: myNode, //instance of a Lenode
     page: Page, //importedt or declared class
