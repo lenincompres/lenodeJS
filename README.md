@@ -30,28 +30,34 @@ Invoking `Lenode.app(attr)` will return a root Lenode (of the extended class Leh
 // app.js
 import Lenode from './Lenode.js';
 
-// ... declaration of any variables ...
-
 var app = Lenode.app({
-  title: projectName,
+  title: 'Project Name',
   icon: 'assets/images/icon',
   styles: ['reset.css'],
-  scripts: ['auxiliar.js'],
-  //pages may be Lenode instances, Classes that extend Lenode or model objects to be turned into Lenodes
+  scripts: ['auxiliary.js'],
+  //Pages may be existing Lenodes, Classes extending Lenode or model objects to be turned into a Lenode
   pages: {
-    home: new Lenode(modelObj, styleObj),
-    bio: { h1Title: 'Bio Title', pBio: 'This is the bio text.' },
-    info: Info, //class or imported module that extends Lenode (to be instantiated)
-    contanct: new Contact() //instance of class that extends Lenode
+    home: myNode, //instance of a Lenode
+    page: Page, //importedt or declared class
+    info: {
+      h3Title: 'Info page',
+      pDesc: 'Page created from a model object.'
+    }
   },
-  //set an optional container from a model object, Lenode instance or Class that extends Lenode
+  // An optional container may be a Lenode or created from a model obj
   container: {
-    header: {
+    header: { // header, main and footer are unique, do not need a class
       h1Logo: projectName
     },
-    main: {}, //the container must have a main node where pages are inserted
+    main: {},
     footer: {
-      credits: [projectName, version, authorSite, author, 'LenodeJS']
+      // Attributes are preceded by _ 
+      _style: 'position:absolute;bottom:0;left:0;width:100%;',
+      // Arrays are turned into 'ul' tags with 'il' items
+      list: [
+        'Project name version 0.0.1',
+        Lenode.link('info', 'Learn More')
+      ]
     }
   }
 });
