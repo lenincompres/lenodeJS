@@ -20,7 +20,7 @@ var myNode = new Lenode({
   }
 })
 ```
-You may also pass `.json` and/or `.css` files as model and style to create a Lenode. Once created, subnodes can be accessed as well as their methods as properties. `myNode.buttonEnter.onclick = foo;` or `myNode.divInfo.addClass('selected');`, etc.
+You may also pass `.json` and/or `.css` files as model and style to create a Lenode. Subnodes can be accessed as well as their methods and properties. `myNode.buttonEnter.onclick = foo;` or `myNode.divInfo.addClass('selected');`, etc.
 
 Lenodes can also be add to another indicating a parent node and a name: `new Lenode(model, style, name, parent)` or from a parent node, by invoking the `add` method: `parentNode.add(childLenode, name)`.
 
