@@ -3,13 +3,13 @@ export default class Lenode {
   constructor(model = {}, style = false, name, parent) {
     new.target.name !== 'Lenode' ? this._class = new.target.name : null;
     this._name = !name ? this._class : name;
-    if (Lenode.isNode(model)) { //a node element is provided
+    if (Lenode.isNode(model)) {
       this._node = model;
       this._tag = model.tagName.toLowerCase();
       [...model.children].forEach(node => new Lenode(node, false, node.tagName, this));
       !this._name ? this._name = model.tagName.toLowerCase() : null;
       parent ? this.parent = parent : null; //should it be added to parent?
-    } else { //it is an object to be nodified
+    } else {
       var classes = name ? name.replace(/\./g,'_').split('_') : [];
       this._tag = Array.isArray(model) ? 'ul' : classes.length > 1 ? classes.shift() : 'div';
       this._class && !classes.includes(this._class) ? classes.push(this._class) : null;
@@ -117,18 +117,18 @@ export default class Lenode {
     });
   }
 
-  buildJSON(url, mapper) {
+  buildJSON(url, mapper, callBack) {
     return Lenode.getJSON(url, mapper).then(r => {
       var r = this.build(r);
-      this.setup();
+      callBack ? callBack() : this.setup();
       return r;
     });
   }
 
-  updateJSON(url, mapper) {
+  updateJSON(url, mapper, callBack) {
     return Lenode.getJSON(url, mapper).then(r => {
       var r = this.update(r);
-      this.setup();
+      callBack ? callBack() : this.setup();
       return r;
     });
   }
@@ -306,9 +306,6 @@ export default class Lenode {
   set _value(text) {
     this._node.value = text;
   }
-  get _isLenode() {
-    return Lenode.isNode(this._node);
-  }
   get _html() {
     return this._node.innerHTML;
   }
@@ -317,6 +314,9 @@ export default class Lenode {
   }
   get _value() {
     return this._node.value;
+  }
+  get _isLenode() {
+    return Lenode.isNode(this._node);
   }
 
   /* ---------------- STATIC METHODS --------------- */
@@ -368,6 +368,7 @@ export default class Lenode {
     if (!model) return;
     if (typeof model === 'string') return model;
     !name ? new.target ? name = new.target.name : name = this._name : null;
+    name = name.replace(/([A-Z])/g, ".$1").toLowerCase();
     var style = !name.startsWith('.') ? '.' + name : name;
     if (name.includes('@media')) {
       var mediaStart = name.indexOf('@media');
