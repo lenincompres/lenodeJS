@@ -69,5 +69,5 @@ This is all the HTML you will need: the `index.html`.
 <body></body>
 </html>
 ```
-###Deploiment
+### Deploiment
 LenodeJS is design to work without other libraries or instalations, not even npm. However, it is build in ECMAScript 2018. You will need a transpiler to have it work in browsers that do not support it. `Chrome` is golden.
