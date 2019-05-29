@@ -3,10 +3,11 @@ LenodeJS allows you to create web applications coding completely on JS, no hmtl,
 
 Create DOM elements as Lenodes passing a **model object** and a **style object**:
 ```js
-//Creating a node (DOM element) 
-
+/* Creating a node (DOM element) 
+The first word in a camelCase is the tag. Subsequent ones are classes. You may also use _ as in 'div_info'
+*/
 var myNode =  new Lenode({
-  divInfo: { // The first word in camleCase is the tag. You may also use 'div_info'
+  divInfo: {
     h2Title: 'Home page',
     pDescription: 'Welcome to the template for a Lenode project.'
   },
