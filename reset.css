@@ -3,6 +3,13 @@
    Revised by: Lenin Compres
    License: none (public domain)
 */
+:root {
+  --bright: steelblue;
+  --medium: slategray;
+  --dark: darkslategray;
+  --light: lightsteelblue;
+  --blank: aliceblue;
+}
 
 html, body, div, span, applet, object, iframe,
 h1, h2, h3, h4, h5, h6, p, blockquote, pre,
@@ -33,7 +40,9 @@ footer, header, hgroup, menu, nav, section {
 body {
   font-family: sans-serif;
 	font-size: 86%;
-	line-height: 1.5em;
+  line-height: 1.5em;
+  color: black;
+  background-color: white;
 }
 ol, ul {
 	list-style: none;
@@ -73,12 +82,21 @@ i{
 }
 button{
   cursor: pointer;
+  border-radius: .34em;
+  background-color: var(--bright);
+  padding: .34em .68em;
+  margin: .34em;
+  border: none;
+  color: white;
+}
+button:hover{
+  background-color: var(--dark);
 }
 a{
   cursor: pointer;
   text-decoration: none;
-  color: darkslategray;
+  color: var(--dark);
 }
 a:hover{
-  color: slategray;
+  color: var(--bright);
 }

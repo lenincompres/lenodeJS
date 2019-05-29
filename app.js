@@ -1,74 +1,77 @@
-import Lenode from './Lenode.min.js';
+import Lenode from './Lenode.js';
 
-/* You may create pages importing classes that extend Lenode
-import Page from './Page.js';
-*/
+/* Create pages importing classes that extend Lenode
+import Homepage from './Homepage.js';
 
-// Or instantiate Lenode, passing a modelObj and styleObj
-var homepage = new Lenode({
-  // The first word in a camelCase is the tag. Subsequent ones are classes. You may use _ as in 'div_info'
-  divInfo: {
-    h2Title: 'Home page',
-    pDescription: 'Welcome to the template for a Lenode project.'
-  },
-  buttonHello: 'Hello'
-}, {
-  margin: '4em 5em',
-  textAlign: 'center',
-  divInfo: {
-    fontFamily: 'serif',
+Or declaring them passing model and style objects (optional) to ther super method */
+class Homepage extends Lenode {
+  constructor() {
+    super({
+      divInfo: {
+        h2Title: 'Welcome',
+        pDescription: 'This is a template for LenodeJS.</br>This page is created from a class that extends Lenode.'
+      },
+      buttonHello: 'Hello'
+    }, {
+      margin: '5em !important',
+      textAlign: 'center',
+      divInfo: {
+        fontFamily: 'serif',
+      }
+    });
+    // The model object creates DOM elements. The first word in camelCases are tags; subsequent words are classes. You may also use "_" to divide them: "div_info". 
+    // The style object is turned to CSS. camelCase is separated by "-" for properties, and by "." for selectors. It supports nesting.
+
+    this.buttonHello.onclick = b => app.goto(b._text.toLowerCase());
   }
-});
+};
 
-// Create the app or "lehead". Which will be assigned to document.lehead
-const projectName = 'Project Name';
-const version = '0.0.1';
-const lenodeLink = 'https://github.com/lenincompres/lenodeJS';
+// Create the app or "lehead" using "Lenode.app(attr)". Which will also assign the app to document.lehead
 var app = Lenode.app({
-  title: projectName,
+  title: 'LenodeJS Project',
   icon: 'assets/images/icon',
   styles: ['reset.css'],
   scripts: [],
-  //Pages may be existing Lenodes, Classes extending Lenode or model objects to be turned into a Lenode
+  // Pages may be Classes extending Lenode, or model objects to be turned into Lenodes
   pages: {
-    home: homepage,
-    // page: Page,
+    home: Homepage,
     info: {
-      h3Title: 'Info page',
-      pDesc: 'Page created from a model object.'
+      h3Title: 'Info Page',
+      pDesc: 'Created from a model object.'
     }
   },
-  // An optional container may be a Lenode or created from a model obj
-  container: {
-    header: { // header, main and footer are unique, do not need a class
-      h1Logo: projectName
+  // An optional body container may be created from a Class extending Lenode, or a model object to be turned into Lenode
+  body: {
+    header: { // "header", "main" and "footer" tags do not need a class
+      h1Logo: 'LenodeJS Project'
     },
-    main: {},
+    main: {}, // The first "main" encoutered is where pages will be loaded
     footer: {
-      // Attributes are preceded by _ 
+      //  Preceed attributes with "_" 
       _style: 'position:absolute;bottom:0;left:0;width:100%;',
       // Arrays are turned into 'ul' tags with 'il' items
-      list: [
-        Lenode.link('info', projectName + ' ' + version),
-        'Powered by ' + Lenode.link(lenodeLink, 'LenodeJS')
+      menu: [
+        Lenode.link('info', 'Lenode Project 0.0.1'),
+        Lenode.link('https://github.com/lenincompres/lenodeJS', 'Powered by LenodeJS')
       ]
     }
   }
 });
 
-//adding style to existing Lenode. Use CSS text, style obj or .css file
-app.container.addStyle({
+// You may add styles to an existing Lenode; use CSS text, style obj or .css file to be linked
+app.body.addStyle({
   width: '100%',
   maxWidth: '800px',
   height: '100vh',
   margin: '0 auto',
-  background: 'aliceblue',
+  background: 'var(--blank)',
   main: {
     margin: '1em'
   },
   header: {
-    background: 'lightslategray',
-    padding: '.5em 1em'
+    background: 'var(--medium)',
+    color: 'var(--blank)',
+    padding: '.1em 1em .5em'
   },
   footer: {
     textAlign: 'center',
@@ -82,12 +85,11 @@ app.container.addStyle({
   }
 });
 
-//adding a page AFTER the app is created. Use a model object, Lenode instance or Class that extends Lenode.
+// You may add pages after the app is created. Use a model object, Lenode instance, or Class that extends Lenode.
 app.addPage({
   h3Hello: 'Hello Page',
   pDescription: 'Created after the app was declared.'
 }, 'hello');
 
-//adding actions
-app.container.header.onclick = () => app.goto();
-homepage.buttonHello.onclick = b => app.goto(b._text.toLowerCase());
+// Actions
+app.body.header.onclick = () => app.goto();
