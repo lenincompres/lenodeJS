@@ -6,7 +6,7 @@ Create DOM elements as Lenodes passing a **model object** and a **style object**
 //Creating a node (DOM element) 
 
 var myNode = new Lenode({
-  divInfo: { //first word of the camelCase used as tag. You may also use div_info
+  divInfo: { //the first word of camelCase is used as tag. You may also use div_info
     h2Title: 'Home page',
     pDescription: 'Welcome to the template for a Lenode project.'
   },
@@ -20,6 +20,7 @@ var myNode = new Lenode({
   }
 })
 ```
+Lenodes can also ne created indicating a parent node and name: `new Lenode(model, style, name, parent)` or from a parent node, by invoking the `add` method: `parentNode.add(childLenode, name)`.
 
 You may also pass `.json` and/or `.css` files as model and style to create a Lenode. Once created, subnodes can be accessed and given actions and changes as properties. `myNode.buttonEnter.onclick = () => foo();` or `myNode.divInfo.addClass('highlight');`, etc.
 
