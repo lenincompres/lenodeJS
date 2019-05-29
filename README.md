@@ -37,7 +37,7 @@ var app = Lenode.app({
   icon: 'assets/images/icon',
   styles: ['reset.css'],
   scripts: ['auxiliar.js'],
-  //set a container from a model object, Lenode instance or Class that extends Lenode
+  //set an optional container from a model object, Lenode instance or Class that extends Lenode
   container: {
     header: {
       h1Logo: projectName
