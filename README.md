@@ -37,7 +37,7 @@ var app = Lenode.app({
   icon: 'assets/images/icon',
   styles: ['reset.css'],
   scripts: ['auxiliar.js'],
-  //pages may also be model objects, Lenode instances or Classes that extend Lenode
+  //pages may be Lenode instances, Classes that extend Lenode or model objects to be turned into Lenodes
   pages: {
     home: new Lenode(modelObj, styleObj),
     bio: { h1Title: 'Bio Title', pBio: 'This is the bio text.' },
