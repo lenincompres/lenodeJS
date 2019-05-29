@@ -58,7 +58,7 @@ var app = Lenode.app({
 ```
 The Lenode `app` or `lehead` has special methods to handle navigation, queries and routing. The most common is `app.goto(page)` that loads a page onto the container's main Lenode.
 ### The Index Page
-This is all the HTML you will ever need: the `index.html`.
+This is all the HTML you will need: the `index.html`.
 ```html
 <!DOCTYPE html>
 <html>
