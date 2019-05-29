@@ -37,6 +37,13 @@ var app = Lenode.app({
   icon: 'assets/images/icon',
   styles: ['reset.css'],
   scripts: ['auxiliar.js'],
+  //pages may also be model objects, Lenode instances or Classes that extend Lenode
+  pages: {
+    home: new Lenode(modelObj, styleObj),
+    bio: { h1Title: 'Bio Title', pBio: 'This is the bio text.' },
+    info: Info, //class or imported module that extends Lenode (to be instantiated)
+    contanct: new Contact() //instance of class that extends Lenode
+  },
   //set an optional container from a model object, Lenode instance or Class that extends Lenode
   container: {
     header: {
@@ -46,13 +53,6 @@ var app = Lenode.app({
     footer: {
       credits: [projectName, version, authorSite, author, 'LenodeJS']
     }
-  },
-  //pages may also be model objects, Lenode instances or Classes that extend Lenode
-  pages: {
-    home: new Lenode(modelObj, styleObj),
-    bio: { h1Title: 'Bio Title', pBio: 'This is the bio text.' },
-    info: Info, //class or imported module that extends Lenode (to be instantiated)
-    contanct: new Contact() //instance of class that extends Lenode
   }
 });
 ```
