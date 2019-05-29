@@ -38,7 +38,7 @@ var app = Lenode.app({
   //Pages may be existing Lenodes, Classes extending Lenode or model objects to be turned Lenodes
   pages: {
     home: myNode, //instance of a Lenode
-    page: Page, //importedt or declared class
+    page: Page, //imported or declared class
     info: {
       h3Title: 'Info page',
       pDesc: 'Page created from a model object.'
@@ -47,7 +47,7 @@ var app = Lenode.app({
   // An optional container may be a Lenode or created from a model obj
   container: {
     header: { // header, main and footer are unique, do not need a class
-      h1Logo: projectName
+      h1Logo: 'Project Name'
     },
     main: {},
     footer: {
