@@ -22,7 +22,7 @@ var myNode = new Lenode({
 ```
 You may also pass `.json` and/or `.css` files as model and style to create a Lenode. Subnodes can be accessed as well as their methods and properties. `myNode.buttonEnter.onclick = foo;` or `myNode.divInfo.addClass('selected');`, etc.
 
-Lenodes can also be add to another indicating a parent node and a name: `new Lenode(model, style, name, parent)` or from a parent node, by invoking the `add` method: `parentNode.add(childLenode, name)`.
+Lenodes can also be added to another indicating a parent node and a name: `new Lenode(model, style, name, parent)` or from a parent node, by invoking the `add` method: `parentNode.add(childLenode, name)`.
 
 ## Creating an App
 Invoking `Lenode.app(attr)` will return a root Lenode (of the extended class Lehead). The root node will be also assigned to `document.lehead`.
