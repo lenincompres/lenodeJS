@@ -5,20 +5,19 @@ Create DOM elements as Lenodes passing a **model object** and a **style object**
 ```js
 //Creating a node (DOM element) 
 
-var myNode = new Lenode({
-  divInfo: { //the first word of camelCase is used as tag. You may also use div_info
+var myNode =  new Lenode({
+  divInfo: {
     h2Title: 'Home page',
     pDescription: 'Welcome to the template for a Lenode project.'
   },
-  buttonEnter: 'enter'
+  buttonHello: 'Hello'
 }, {
-  marginTop: '2em',
-  divInfo: {  //you may nest selectors
-    h2:{
-      color: 'gray'
-    }
+  margin: '4em 5em',
+  textAlign: 'center',
+  divInfo: {
+    fontFamily: 'serif',
   }
-})
+});
 ```
 You may also pass `.json` and/or `.css` files as model and style to create a Lenode. Subnodes can be accessed as well as their methods and properties. `myNode.buttonEnter.onclick = foo;` or `myNode.divInfo.addClass('selected');`, etc.
 
