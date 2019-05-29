@@ -44,8 +44,8 @@ var app = Lenode.app({
       pDesc: 'Page created from a model object.'
     }
   },
-  // An optional container may be a Lenode or created from a model obj
-  container: {
+  // An optional body container may be a Lenode or created from a model obj
+  body: {
     header: { // header, main and footer are unique, do not need a class
       h1Logo: 'Project Name'
     },
