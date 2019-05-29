@@ -6,7 +6,7 @@ import Page from './Page.js';
 
 // Or instantiate Lenode, passing a modelObj and styleObj
 var homepage = new Lenode({
-  // The first word in a camelCase is the tag. Subsequent ones are classes. You may also use _ as in 'div_info'
+  // The first word in a camelCase is the tag. Subsequent ones are classes. You may use _ as in 'div_info'
   divInfo: {
     h2Title: 'Home page',
     pDescription: 'Welcome to the template for a Lenode project.'
