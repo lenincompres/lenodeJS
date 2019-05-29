@@ -47,7 +47,7 @@ var app = Lenode.app({
       credits: [projectName, version, authorSite, author, 'LenodeJS']
     }
   },
-  //pages may be Lenode instances, model objects or Classes that extend Lenode
+  //pages may also be model objects, Lenode instances or Classes that extend Lenode
   pages: {
     home: new Lenode(modelObj, styleObj),
     bio: { h1Title: 'Bio Title', pBio: 'This is the bio text.' },
