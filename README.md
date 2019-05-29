@@ -25,7 +25,7 @@ You may also pass `.json` and/or `.css` files as model and style to create a Len
 Lenodes can also be add to another indicating a parent node and a name: `new Lenode(model, style, name, parent)` or from a parent node, by invoking the `add` method: `parentNode.add(childLenode, name)`.
 
 ## Creating an App
-Create an app by invoking `Lenode.app(attr)` which will return a root Lenode of the extended type Lehead. The returned root node will be also assigned to `document.lehead`.
+Invoking `Lenode.app(attr)` will return a root Lenode (of the extended class Lehead). The root node will be also assigned to `document.lehead`.
 ```js
 // app.js
 import Lenode from './Lenode.js';
