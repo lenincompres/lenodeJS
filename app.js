@@ -25,6 +25,20 @@ class Homepage extends Lenode {
     this.buttonHello.onclick = b => app.goto(b._text.toLowerCase());
   }
 };
+var homepage = new Lenode({
+  divInfo: {
+    h2Title: 'Welcome',
+    pDescription: 'This is a template for LenodeJS.</br>This page is created from a class that extends Lenode.'
+  },
+  buttonHello: 'Hello'
+}, {
+  margin: '5em !important',
+  textAlign: 'center',
+  divInfo: {
+    fontFamily: 'serif',
+  }
+});
+homepage.buttonHello.onclick = b => app.goto(b._text.toLowerCase());
 
 // Create the app or "lehead" using "Lenode.app(attr)". Which will also assign the app to document.lehead
 var app = Lenode.app({
@@ -34,23 +48,21 @@ var app = Lenode.app({
   scripts: [],
   // Pages may be Classes extending Lenode, or model objects to be turned into Lenodes
   pages: {
-    home: Homepage,
+    home: homepage,
     info: {
       h3Title: 'Info Page',
       pDesc: 'Created from a model object.'
     }
   },
   // An optional body container may be created from a Class extending Lenode, or a model object to be turned into Lenode
-  body: {
+  container: {
     header: { // "header", "main" and "footer" tags do not need a class
       h1Logo: 'LenodeJS Project'
     },
     main: {}, // The first "main" encoutered is where pages will be loaded
     footer: {
-      //  Preceed attributes with "_" 
-      _style: 'position:absolute;bottom:0;left:0;width:100%;',
-      // Arrays are turned into 'ul' tags with 'il' items
-      menu: [
+      _style: 'position:absolute;bottom:0;left:0;width:100%;', // Preceed attributes with "_" 
+      menu: [ // Arrays are turned into 'ul' tags with 'il' items
         Lenode.link('info', 'Lenode Project 0.0.1'),
         Lenode.link('https://github.com/lenincompres/lenodeJS', 'Powered by LenodeJS')
       ]
@@ -59,7 +71,7 @@ var app = Lenode.app({
 });
 
 // You may add styles to an existing Lenode; use CSS text, style obj or .css file to be linked
-app.body.addStyle({
+app.container.addStyle({
   width: '100%',
   maxWidth: '800px',
   height: '100vh',
@@ -92,4 +104,4 @@ app.addPage({
 }, 'hello');
 
 // Actions
-app.body.header.onclick = () => app.goto();
+app.container.header.onclick = () => app.goto();

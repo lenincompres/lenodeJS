@@ -69,7 +69,8 @@ export default class Lenode {
       _tag: 'style',
       _type: 'text/css'
     };
-    return document.lehead ? document.lehead.replaceChild(styleNode, 'style_' + this._class) : this.replaceChild(styleNode, 'style_' + this._class, true);
+    const name = 'style_' + this._class;
+    return document.lehead ? document.lehead.replaceChild(styleNode, name) : this.replaceChild(styleNode, name, true);
   }
 
   become(model, andDelete) {
@@ -79,6 +80,12 @@ export default class Lenode {
     this._class = model._class;
     this._node.className = model._node.className;
     return this;
+  }
+
+  reNode(node) {
+    this._node = node;
+    this._children.forEach(c => this._node.appendChild(c._node));
+    console.log(this._node);
   }
 
   build(model = {}, style) {
@@ -110,9 +117,9 @@ export default class Lenode {
   }
 
   remove(andDelete = false) { //removes this lenode on the parent
-    this._node.remove();
+    this._node.parentNode ? this._node.parentNode.removeChild(this._node) : null;
     this._style ? this._style.remove() : null;
-    if(andDelete) {
+    if (andDelete) {
       this.parent ? delete this.parent[this._name] : null;
       delete this;
     }
@@ -345,11 +352,8 @@ export default class Lenode {
     if (!name) console.log(model);
     const isAttr = name.startsWith('_');
     var tag = Array.isArray(model) ? 'ul' :
-      model._tag ? model._tag : //tag indicated in a prop
-      ['header', 'main', 'footer', 'style'].includes(name) || isAttr ? name : 'div'; //no tag indicated
-    if (tag === 'style') {
-      //for future, being able to add a style tag with stylize
-    }
+      model._tag ? model._tag :
+      ['header', 'main', 'footer', 'style'].includes(name) || isAttr ? name : 'div';
     var className = isAttr ? null : name;
     var classes = className;
     var nameArr = name.replace(/([A-Z])/g, "_$1").toLowerCase().split('_'); //breaks down complex names
@@ -359,7 +363,7 @@ export default class Lenode {
       classes = [className, ...nameArr];
     }
     delete model._tag;
-    if (isAttr && parent) { //input meant as attribute
+    if (isAttr && parent) { //meant as attribute
       ['_html', '_text'].includes(tag) ? null :
         name === '_class' ? parent.addClass(model) :
         parent.setAttribute(name.replace(/\_/g, ''), model);
@@ -370,7 +374,8 @@ export default class Lenode {
       node.innerHTML = model;
       return new Lenode(node, false, name, this, prepend);
     }
-    ['script', 'link', 'meta', 'style'].includes(tag) ? classes = null : null; //creates child lenode and nodifies grand children
+    ['script', 'link', 'meta', 'style'].includes(tag) ? classes = null : null; 
+    //creates child lenode and nodifies grand children
     var child = new Lenode(this.createNode(tag, classes, parent._node, {}, prepend), false, name, parent);
     tag === 'main' && !document.lehead.target ? document.lehead.target = child : null;
     tag === 'ul' ? child._list = model.map(o => Lenode.nodify(o, 'li_item', child)) :
@@ -378,7 +383,7 @@ export default class Lenode {
     return child;
   }
 
-  static stylize(model, name) { //similar to nodify, turns object into css
+  static stylize(model, name) { //turns object into css
     if (!model) return;
     if (typeof model === 'string') return model;
     !name ? new.target ? name = new.target.name : name = this._name : null;
@@ -465,7 +470,7 @@ export class Lehead extends Lenode {
     this._data = {};
     this._pages = attr.pages ? attr.pages : _attr.pages;
     this._home = attr.homepage ? attr.homepage : _attr.homepage ? _attr.homepage : 'home';
-    this.body = attr.body ? attr.body : _attr.body;
+    this.container = attr.container ? attr.container : _attr.container;
     var title = attr.title ? attr.title : _attr.title;
     title ? this.add(title, 'title_site') : null;
     var icon = attr.icon ? attr.icon : _attr.icon;
@@ -494,17 +499,10 @@ export class Lehead extends Lenode {
       this.addResource(src.endsWith('.js') ? src : `${src}.js`, 'js');
     });
     document.lehead = this;
-    //body
     document.lebody = new Lenode(document.body);
-    !this.body._isLenode ? this.body = new Lenode(this.body) : null;
-    this.loadNode(this.body);
-    //to get query string on popstate
+    this.setPage(this.container._isLenode ? this.container : this.container = new Lenode(this.container));
     window.addEventListener('popstate', () => this.getQuery());
     this.getQuery();
-  }
-
-  getId() {
-    return this._count += 1;
   }
 
   addResource(path, type) { //adds js/css/icons to the head tag
@@ -524,6 +522,7 @@ export class Lehead extends Lenode {
     if (!name) return console.log('Page needs a name to be added');
     this._pages[name] = page;
     this.getQuery();
+    return page;
   }
 
   addModule(name, loadPage = true) {
@@ -536,8 +535,7 @@ export class Lehead extends Lenode {
       };
       !this._src.endsWith('/') ? this._src += '/' : null;
     }
-    const inst = !loadPage ? `document.lehead.setPage(new ${name}())` :
-      `new ${name}()`;
+    const inst = !loadPage ? `document.lehead.setPage(new ${name}())` : `new ${name}()`;
     const mod = this.replaceChild({
       _tag: 'script',
       _type: 'module',
@@ -546,27 +544,25 @@ export class Lehead extends Lenode {
     return loadPage ? this._pageModule = mod : mod;
   }
 
-  loadNode(node, isPage = true) {
-    if (!node) this.setPage();
-    if (node._isLenode) return this.setPage(node);
-    if (typeof node === 'function') return this.loadNode(!!node.nodify ? new node() : node());
-    if (typeof node !== 'string') return this.loadNode(new Lenode(node));
-    if (this._pages[node]) return this.loadNode(this._pages[node]);
-    this.setPage(new Lenode({
-      p_message: `Cannot access <b>${node}</b> page.`
-    }));
-    this.addModule(node, isPage);
-  }
-
-  setPage(page) {
-    !page ? page = new Lenode({}) : !page._isLenode ? page = new Lenode(page) : null;
-    if (page !== this.body) return document.lepage = this.target.become(page, false);
-    //set a body
-    //page._children.forEach(c => document.lebody.add(c));
-    //this.body = document.lebody.addClass(page._class);
-    this.body = document.lebody.become(page);
-    !this.target ? this.target = this.body.add({}, 'main') : null;
-    document.lepage ? document.lehead.route(document.lepage._name) : null;
+  setPage(page = {}) {
+    if (!page._isLenode) {
+      page = !!page.nodify ? new page() : 
+        typeof page === 'function' ? page() : 
+        typeof page !== 'string' ? new Lenode(page) : 
+        this._pages[page] ? this._pages[page] : 
+        new Lenode({
+          _id: 404,
+          p_message: `Cannot access <b>${page}</b> page.`
+        });
+    }
+    if (page._id === 404) this.addModule(page, true);
+    if (page === this.container) {
+      this.container = document.lebody.replaceChild(page, 'container');
+      !this.target ? this.target = this.container.add({}, 'main') : null;
+      document.lepage ? document.lehead.route(document.lepage._name) : null;
+      return this.container;
+    }
+    return document.lepage = this.target.replaceChild(page, 'page');
   }
 
   goto(pageName) { //goes to page calling end function of current
@@ -593,7 +589,7 @@ export class Lehead extends Lenode {
     }, '', newurl);
     this._pageModule && this._pageModule.remove ? this._pageModule.remove() : null;
     this._pageName = pageName;
-    this.loadNode(pageName);
+    this.setPage(pageName);
   }
 
   getQuery(e) { //gets query string. First argument is the page
