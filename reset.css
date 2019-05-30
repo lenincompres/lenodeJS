@@ -42,7 +42,7 @@ body {
 	font-size: 86%;
   line-height: 1.5em;
   color: black;
-  background-color: white;
+  background-color: var(--dark);
 }
 ol, ul {
 	list-style: none;

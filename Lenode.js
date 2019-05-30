@@ -90,7 +90,7 @@ export default class Lenode {
     var name = child && typeof child === 'string' ? child :
       child ? child._name :
       model._name ? name = model._name : null;
-    if (!this[name] || !this[name]._node)
+    if (!this[name] || !this[name]._isLenode)
       return this.add(model, name, prepend);
     var oldNode = this[name]._node;
     child = model._isLenode ? model : Lenode.nodify(model, name, this);
@@ -108,7 +108,7 @@ export default class Lenode {
       this.parent ? delete this.parent[this._name] : null;
       delete this;
     }
-    return
+    return;
   }
 
   update(model = {}) { //updates this lenode
@@ -336,22 +336,22 @@ export default class Lenode {
     if (Lenode.isNode(model)) return new Lenode(model, false, name, parent);
     if (!name) console.log(model);
     const isAttr = name.startsWith('_');
-    var tag = Array.isArray(model) ? 'ul' :
-      model._tag ? model._tag : ['header', 'main', 'footer', 'style'].includes(name) || isAttr ? name : 'div';
+    var tag = Array.isArray(model) ? 'ul' : model._tag ? model._tag : name;
+    !Lenode.isTag(tag) ? tag = 'div' : null;
     var className = isAttr ? null : name;
     var classes = className;
-    var nameArr = name.replace(/([A-Z])/g, "_$1").toLowerCase().split('_'); //breaks down complex names
-    if (!isAttr && !model._tag && nameArr.length > 1) {
-      tag = nameArr.shift(); //tag indicated in the name
-      !tag ? tag = 'div' : null;
-      className = nameArr.pop();
-      classes = [className, ...nameArr];
+    if (!isAttr && !model._tag){
+      var nameTag = name.split('_')[0]; //breaks down complex names
+      if(Lenode.isTag(nameTag)){
+        tag = nameTag;
+        classes = className = name.substr(tag.length + 1);
+      }
     }
     delete model._tag;
     if (isAttr && parent) { //meant as attribute
-      ['_html', '_text'].includes(tag) ? null :
+      ['_html', '_text'].includes(name) ? null :
         name === '_class' ? parent.addClass(model) :
-        parent.setAttribute(name.replace(/\_/g, ''), model);
+        parent.setAttribute(name.replace(/\_/, ''), model);
       return parent[name] = model;
     }
     if (['boolean', 'number', 'string'].includes(typeof model)) { //end lenodes (no children)
@@ -372,9 +372,11 @@ export default class Lenode {
     if (!model) return;
     if (typeof model === 'string') return model;
     !name ? new.target ? name = new.target.name : name = this._name : null;
-    name = name.replace(/([A-Z])/g, ".$1").toLowerCase();
     var style = !name.startsWith('.') ? '.' + name : name;
-    const selector = sel => sel.replace(/_/g, ' ').replace(/\$/g, ':').replace(/&/g, '');
+    const selector = sel => {
+      sel.startsWith('_') ? sel = sel.replace(/_/, ' '): null;
+      return sel.replace(/_/g, '.').replace(/\$/g, ':').replace(/&/g, '');
+    }
     if (name.includes('@media')) {
       var mediaStart = name.indexOf('@media');
       style += ' {\n';
@@ -388,7 +390,7 @@ export default class Lenode {
     style += ' {\n';
     Object.keys(model).forEach(prop => {
       if (['string', 'number'].includes(typeof model[prop])) {
-        style += '  ' + prop.replace(/([A-Z])/g, "-$1").toLowerCase() + ': ' + model[prop] + ';\n';
+        style += '  ' + Lenode.uncamel(prop, '-') + ': ' + model[prop] + ';\n';
         delete model[prop];
       } else if (prop.includes(',')) { //if commas, assign props to multiple selector children
         prop.split(',').map(sel => sel.trim())
@@ -399,7 +401,8 @@ export default class Lenode {
     style += '}\n';
     //nested or children selectors
     Object.keys(model).forEach(key => {
-      var space = ' _.:$&>'.includes(key.charAt(0)) ? '' : '>';
+      var space = [' ','_','.',':','$','&','>'].includes(key.charAt(0)) ? '' : '>';
+      space.length && !Lenode.isTag(key.split('_')[0]) ? space = space + '.' : null ;
       style += Lenode.stylize(model[key], name + space + selector(key));
     });
     return style;
@@ -437,6 +440,14 @@ export default class Lenode {
     } catch (e) {
       return (typeof obj === "object") && (obj._nodeType === 1) && (typeof obj.style === "object") && (typeof obj.ownerDocument === "object");
     }
+  }
+
+  static uncamel(word, s='_'){
+    return word.replace(/([A-Z])/g, s + '$1'.toLowerCase());
+  }
+  
+  static isTag(tag){
+    return tag && tag.match(/^h[1-9]$/) || ['a','abbr','acronym','address','applet','area','article','aside','audio','b','base','basefont','bdo','big','blockquote','body','br','button','canvas','caption','center','cite','code','col','colgroup','datalist','dd','del','dfn','div','dl','dt','em','embed','fieldset','figcaption','figure','font','footer','form','frame','frameset','head','header','hr','html','i','iframe','img','input','ins','kbd','label','legend','li','link','main','map','mark','meta','meter','nav','noscript','object','ol','optgroup','option','p','param','pre','progress','q','s','samp','script','section','select','small','source','span','strike','strong','style','sub','sup','table','tbody','td','textarea','tfoot','th','thead','time','title','tr','u','ul','var','video','wbr'].includes(tag);
   }
 
   static getJSON(url, mapper) {
