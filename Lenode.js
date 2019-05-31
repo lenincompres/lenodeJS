@@ -372,11 +372,16 @@ export default class Lenode {
     if (!model) return;
     if (typeof model === 'string') return model;
     !name ? new.target ? name = new.target.name : name = this._name : null;
-    var style = !name.startsWith('.') ? '.' + name : name;
-    const selector = sel => {
-      sel.startsWith('_') ? sel = sel.replace(/_/, ' '): null;
-      return sel.replace(/_/g, '.').replace(/\$/g, ':').replace(/&/g, '');
+    const selector = (sel, first = false) => {
+      const xtr = ['_','.',':','$','>'].includes(sel.charAt(0));
+      const link = first || xtr ? '' : '>';
+      sel = sel.replace(/__/g, ' ');
+      const tied = sel.startsWith('_');
+      tied ? sel = sel.replace(/_/, ''): null;
+      (tied || !xtr) && !Lenode.isTag(sel.split('_')[0]) ? sel = '.' + sel : null ;
+      return link + sel.replace(/_/g, '.').replace(/\$/g, ':');
     }
+    var style = selector(name, true);
     if (name.includes('@media')) {
       var mediaStart = name.indexOf('@media');
       style += ' {\n';
@@ -392,7 +397,7 @@ export default class Lenode {
       if (['string', 'number'].includes(typeof model[prop])) {
         style += '  ' + Lenode.uncamel(prop, '-') + ': ' + model[prop] + ';\n';
         delete model[prop];
-      } else if (prop.includes(',')) { //if commas, assign props to multiple selector children
+      } else if (prop.includes(',')) { // Commas for multiple selectors
         prop.split(',').map(sel => sel.trim())
           .forEach(sel => Lenode.assign(!model[sel] ? model[sel] = {} : model[sel], model[prop]));
         delete model[prop];
@@ -400,11 +405,7 @@ export default class Lenode {
     });
     style += '}\n';
     //nested or children selectors
-    Object.keys(model).forEach(key => {
-      var space = [' ','_','.',':','$','&','>'].includes(key.charAt(0)) ? '' : '>';
-      space.length && !Lenode.isTag(key.split('_')[0]) ? space = space + '.' : null ;
-      style += Lenode.stylize(model[key], name + space + selector(key));
-    });
+    Object.keys(model).forEach(key => style += Lenode.stylize(model[key], name + selector(key)));
     return style;
   }
 
@@ -560,8 +561,9 @@ export class Lehead extends Lenode {
   }
 
   set container(container) {
-    this.target = null; //target is the first main found in container
-    this.body.replaceChild(this.lenode(container), 'container');
+    this.target = null;
+    this.body.replaceChild(this.lenode(container), 'container').addClass('container');
+    console.log(this.body.container.addClass('huh'));
     !this.target ? this.target = this.container.add({}, 'main') : null;
     this._page ? this.route(this._page) : null;
   }

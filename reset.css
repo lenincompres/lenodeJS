@@ -6,7 +6,7 @@
 :root {
   --bright: steelblue;
   --medium: slategray;
-  --dark: darkslategray;
+  --dark: #456;
   --light: lightsteelblue;
   --blank: aliceblue;
 }
@@ -73,6 +73,9 @@ h3{
 }
 h4{
     font-size: 1.17em;
+}
+p{
+  margin: .17em 0;
 }
 b{
     font-weight: bold;

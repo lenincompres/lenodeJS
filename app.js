@@ -1,83 +1,105 @@
-import Lenode from './Lenode.js';
 /* 
-Create pages importing classes that extend Lenode
-import Homepage from './Homepage.js';
-
-Or declaring them
+   LenodeJS v1.0 | 20190530 
+   sample app 
+   https://github.com/lenincompres/lenodeJS 
+   Create by: Lenin Compres
+   License: none (public domain)
 */
-class HomePage extends Lenode {
-  constructor() {
-    // pass a model and style object (optional) to constructor
-    super({
-      splash: {
-        h2_title: 'Welcome',
-        p_description: 'This is a template for LenodeJS.</br>This page is created from a class that extends Lenode.'
+
+import Lenode from './Lenode.js';
+
+/* 
+// Create pages importing classes that extend Lenode, like so:
+import HomePage from './HomePage.js';
+*/
+
+class HomePage extends Lenode { // Or declare them right here
+  constructor() { // Pass "model" and "style" objects to super constructor
+    super({ // The model will create DOM elements in a tree.
+      splash: { // Names become the element's class. 
+        h2: 'Welcome', // Unless Lenode recognizes them as a tag.
+        p: 'This page was created from a class that extends Lenode.', // Beware of duplicating names in an object
+        p_desc: 'LenodeJS template' // You may indicade a tag and class separated by "_"
       },
-      button_hello: 'Hello'
-      /* 
-      The model object creates DOM elements. 
-      If the first word in camelCase is a tag, it will used as such, and subsequent words will be classes.
-      If no tag is indicated, "div" is used and the name becomes a class.
-      You may also use "_" instead of camelCase: "div_className". 
-      */
-    }, {
-      margin: '4em',
-      textAlign: 'center',
-      splash: {
-        fontFamily: 'serif',
+      helloBtn: {
+        _tag: 'button', // You may indicate the tag as a prop like this
+        _value: 'Hello!', // Preceding "_" works for any element attribute
+        _text: 'Say hello' // It also evokes inner "text" and "html"
       }
-      /* 
-      The style object is turned to CSS. camelCase properties are separated by "-", and selectors by ".". 
-      Nesting selectors is suported.
-      */
+    }, { // The style object will be turned into CSS for this class. 
+      margin: '4em', // Property values are always strings
+      textAlign: 'center', // Properties in camelCase get separated by "-"
+      splash: { // You may nest selectors for child elements.
+        p_desc: { // Use "_" for "tag.class" selectors
+          color: 'var(--medium)' // All CSS values work.
+        },
+        _done: { // Preciding "_" appends the parent selector as ".splash.done"
+          borderBottom: 'solid 1px var(--medium)' // Shorthand works
+        },
+        h2: {
+          $after: { // "$" becomes ":" and appends the parent selector as "h2:after"
+            content: '"!"' // You need quotes for "content" values
+          }
+        }
+      }
     });
-    this.button_hello.onclick = btn => alert(btn._text);
+
+    // You may now access child nodes and their methods and properties
+    this.helloBtn.onclick = btn => {
+      alert(btn._value);
+      this.splash.addClass('done');
+      this.splash.h2._text = 'Hi!';
+      btn.setStyle('display', 'none');
+    }
   }
 };
 
-//You may also create pages by instantiating Lenode
+// You may also create pages by instantiating Lenode
 var contact = new Lenode({
-  h3_title: 'Contact Page',
-  p_description: 'Created from a Lenode object.',
-  input_text: {
-    _placeholder: 'placeholder' // Preceed attributes with "_" 
+  h3: 'Contact Page',
+  p: 'Created from a Lenode object.',
+  input: {
+    _placeholder: 'Message'
   },
-  button_contact: 'Contact'
-});
-contact.button_contact.onclick = () => alert(contact.input_text._value);
+  button: 'Send'
+}); // A style object is optional.
+contact.button.onclick = () => alert(contact.input._value);
 
-// Create the app or "lehead" using "Lenode.app(attr)". This will also assign the app to document.lehead
+// Now create a web app using "Lenode.app()" with settings.
 var app = Lenode.app({
-  title: 'LenodeJS Project',
-  icon: 'assets/images/icon',
-  styles: ['reset.css'],
-  scripts: [],
-  pages: {
-    home: HomePage,
-    contact: contact,
-    about: {  // You may use model objects to be turned into Lenodes
-      h3_title: 'About Page',
-      p_desc: 'Created from a model object.'
+  title: 'LenodeJS Project', // Indicate the title of the page/app
+  icon: 'assets/images/icon', // the path to the icon .png
+  styles: ['reset.css'], // any additional styles to be linked
+  scripts: [], // and JS files
+  pages: { // Set the pages in the app.
+    home: HomePage, // The default page should be named "home"
+    contact: contact, // Page names become their url route "url/?contact/"
+    about: { // You may use a model object to create a page
+      h3: 'About Page',
+      p: 'Created from a model object.'
     }
   },
-  // Setting a body container is optional. It may be created from a Lenode or a model object, or a class extending Lenode.
-  container: { 
+  container: { // Set an optional body container from a Lenode, model object, or class that extens Lenode.
     header: {
-      h1_logo: 'LenodeJS Project'
+      h1: 'LenodeJS Project'
     },
-    main: {}, // The first "main" encoutered is where pages will be loaded
+    main: { // Pages are loaded into the first "main" encoutered
+      _id: 'target' // or an element with a "target" id.
+    },
     footer: {
-      _style: 'position:absolute;bottom:0;width:100%;',
-      menu: [ // Arrays are turned into 'ul' tags with 'il' items
-        Lenode.link('about', 'About'),
-        Lenode.link('contact', 'Contact')
+      _style: 'position:absolute;bottom:0;width:100%;', // You may set inline style as a prop
+      pages: [ // Arrays are turned into 'ul' lists with 'il' items
+        Lenode.link('about', 'About'), // "Lenode.link" creates html links
+        Lenode.link('contact', 'Contact') // Pass a page name and link text
       ]
     }
   }
 });
+// The app is also available as "document.lehead"
 
-// You may add styles to an existing Lenode. Use CSS text, style obj or .css file to be linked
+// You may add styles to existing Lenodes. Use CSS text, style obj or .css file to be linked
 app.container.addStyle({
+  position: 'relative',
   width: '100%',
   maxWidth: '800px',
   height: '100vh',
@@ -87,36 +109,49 @@ app.container.addStyle({
     margin: '1em 2em'
   },
   header: {
+    cursor: 'pointer',
     fontFamily: 'fantasy',
     background: 'var(--medium)',
     color: 'var(--blank)',
   },
   footer: {
-    _li: { // "_" are replaced by space selecting all descendants, not just immediate children
+    __li: { // Use "__" to select all descendants, not just immediate ones
       display: 'inline-block',
-      $before: { // "$" is replaced for ":"
+      $before: {
         content: '"•"',
         margin: '0 .5em'
       },
-      ':first-child:before': { // you may use selectors as strings
+      ':first-child:before': { // You may use complex selectors as strings
         content: '""',
         margin: '0'
       }
     }
   },
-  'header,footer':{ // apply styles to multiple selectors with ",". Överrides other styles.
+  'header, footer': { // Apply styles to multiple selectors with "," overriding their individual styles.
     textAlign: 'center',
     padding: '.1em 1em .5em'
   }
 });
 
-// and add actions
+// You may add actions to existing Lenodes.
 app.container.header.onclick = () => app.goto();
+// The "goto" method takes you any page name passed, defaulting to "home".
 
-// You may also add pages with "addPage(page, name)". The page may be a Lenode or model object, or a class that extends Lenode.
+// You may add pages with "addPage(page, name)".
 app.addPage({
   h3: 'More Page',
   p: 'Created after the app was declared.',
-  h4: Lenode.link('https://github.com/lenincompres/lenodeJS', 'LenodeJS')
+  a: {
+    _href: 'https://github.com/lenincompres/lenodeJS',
+    _text: 'LenodeJS',
+    _target: '_blank'
+  }
 }, 'more');
-app.container.footer.menu.add(Lenode.link('more','More'));
+
+// You may add Lenodes to existing ones.
+app.container.footer.pages.add(Lenode.link('more', 'More'));
+// If the parent is a list, Lenode knows to add as an item.
+
+/*
+ Enjoy!
+*/
