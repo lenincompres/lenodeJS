@@ -3,7 +3,7 @@ LenodeJS allows you to create web applications coding completely on JS, no hmtl,
 
 Create DOM elements as Lenodes passing a **model object** and a **style object**:
 ```js
-var myNode =  new Lenode({
+var homepage =  new Lenode({
   div_info: {
     h2_title: 'Home page',
     p_description: 'Welcome to the template for a Lenode project.'
@@ -34,23 +34,20 @@ var app = Lenode.app({
   scripts: ['auxiliary.js'],
   //Pages may be existing Lenodes, Classes extending Lenode or model objects to be turned Lenodes
   pages: {
-    home: myNode, //instance of a Lenode
+    home: homepage, //instance of a Lenode
     page: Page, //imported or declared class
     info: {
       h3Title: 'Info page',
       pDesc: 'Page created from a model object.'
     }
   },
-  // An optional body container may be a Lenode or created from a model obj
-  body: {
-    header: { // header, main and footer are unique, do not need a class
-      h1Logo: 'Project Name'
+  container: {
+    header: {
+      h1: 'Project Name'
     },
     main: {},
-    footer: {
-      // Attributes are preceded by _ 
+    footer: { 
       _style: 'position:absolute;bottom:0;left:0;width:100%;',
-      // Arrays are turned into 'ul' tags with 'il' items
       list: [
         'Project name version 0.0.1',
         Lenode.link('info', 'Learn More')
