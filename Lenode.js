@@ -351,7 +351,7 @@ export default class Lenode {
     if (isAttr && parent) { //meant as attribute
       ['_html', '_text'].includes(name) ? null :
         name === '_class' ? parent.addClass(model) :
-        parent.setAttribute(name.replace(/\_/, ''), model);
+        parent.setAttribute(name.replace(/_/, ''), model);
       return parent[name] = model;
     }
     if (['boolean', 'number', 'string'].includes(typeof model)) { //end lenodes (no children)

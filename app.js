@@ -30,16 +30,17 @@ class HomePage extends Lenode { // Or declare them right here
       margin: '4em', // Property values are always strings
       textAlign: 'center', // Properties in camelCase get separated by "-"
       splash: { // You may nest selectors for child elements.
-        p_desc: { // Use "_" for "tag.class" selectors
-          color: 'var(--medium)' // All CSS values work.
-        },
-        _done: { // Preciding "_" appends the parent selector as ".splash.done"
-          borderBottom: 'solid 1px var(--medium)' // Shorthand works
-        },
-        h2: {
+        h2: { // It recognizes tags from classes
+          fontFamily: 'Serif',
           $after: { // "$" becomes ":" and appends the parent selector as "h2:after"
             content: '"!"' // You need quotes for "content" values
           }
+        },
+        p_desc: { // Use "_" for "tag.class" selectors
+          color: 'var(--accent)' // All CSS values work.
+        },
+        _done: { // Preciding "_" appends the parent selector as ".splash.done"
+          borderBottom: 'solid 1px var(--medium)' // Shorthand works
         }
       }
     });
@@ -67,7 +68,7 @@ contact.button.onclick = () => alert(contact.input._value);
 
 // Now create a web app using "Lenode.app()" with settings.
 var app = Lenode.app({
-  title: 'LenodeJS Project', // Indicate the title of the page/app
+  title: 'Lenode Project', // Indicate the title of the page/app
   icon: 'assets/images/icon', // the path to the icon .png
   styles: ['reset.css'], // any additional styles to be linked
   scripts: [], // and JS files
@@ -81,7 +82,7 @@ var app = Lenode.app({
   },
   container: { // Set an optional body container from a Lenode, model object, or class that extens Lenode.
     header: {
-      h1: 'LenodeJS Project'
+      h1: 'Lenode Project'
     },
     main: { // Pages are loaded into the first "main" encoutered
       _id: 'target' // or an element with a "target" id.
@@ -111,7 +112,7 @@ app.container.addStyle({
   header: {
     cursor: 'pointer',
     fontFamily: 'fantasy',
-    background: 'var(--medium)',
+    background: 'var(--dark)',
     color: 'var(--blank)',
   },
   footer: {
@@ -139,17 +140,17 @@ app.container.header.onclick = () => app.goto();
 
 // You may add pages with "addPage(page, name)".
 app.addPage({
-  h3: 'More Page',
+  h3: 'Source Page',
   p: 'Created after the app was declared.',
   a: {
     _href: 'https://github.com/lenincompres/lenodeJS',
     _text: 'LenodeJS',
     _target: '_blank'
   }
-}, 'more');
+}, 'source');
 
 // You may add Lenodes to existing ones.
-app.container.footer.pages.add(Lenode.link('more', 'More'));
+app.container.footer.pages.add(Lenode.link('source', 'Source'));
 // If the parent is a list, Lenode knows to add as an item.
 
 /*
