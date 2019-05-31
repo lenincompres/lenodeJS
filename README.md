@@ -37,8 +37,8 @@ var app = Lenode.app({
     home: homepage, //instance of a Lenode
     page: Page, //imported or declared class
     info: {
-      h3Title: 'Info page',
-      pDesc: 'Page created from a model object.'
+      h3: 'Info page',
+      p: 'Page created from a model object.'
     }
   },
   container: {
