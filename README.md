@@ -7,15 +7,15 @@ Create DOM elements as Lenodes passing a **model object** and a **style object**
 The first word in a camelCase is the tag. Subsequent ones are classes. You may also use _ as in 'div_info'
 */
 var myNode =  new Lenode({
-  divInfo: {
-    h2Title: 'Home page',
-    pDescription: 'Welcome to the template for a Lenode project.'
+  div_info: {
+    h2_title: 'Home page',
+    p_description: 'Welcome to the template for a Lenode project.'
   },
-  buttonHello: 'Hello'
+  button_hello: 'Hello'
 }, {
   margin: '4em 5em',
   textAlign: 'center',
-  divInfo: {
+  div_info: {
     fontFamily: 'serif',
   }
 });
