@@ -6,7 +6,7 @@
    License: none (public domain)
 */
 
-import Lenode from './Lenode.js';
+import Lenode from './lib/Lenode.js';
 
 /* 
 // Create pages importing classes that extend Lenode, like so:
@@ -69,7 +69,7 @@ contact.button.onclick = () => alert(contact.input._value);
 // Now create a web app using "Lenode.app()" with settings.
 var app = Lenode.app({
   title: 'Lenode Project', // Indicate the title of the page/app
-  icon: 'assets/images/icon', // the path to the icon .png
+  icon: 'assets/icon', // the path to the icon .png
   styles: ['reset.css'], // any additional styles to be linked
   scripts: [], // and JS files
   pages: { // Set the pages in the app.
