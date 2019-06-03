@@ -10,100 +10,205 @@
   --blank: aliceblue;
   --bright: steelblue;
   --accent: goldenrod;
-  --intense: indigo;
   --hot: crimson;
   --cool: teal;
+  --intense: indigo;
+  --baseFont: roboto, sans-serif;
+  --headFont: fantasy;
+  --hypeFont: cursive;
 }
 
-html, body, div, span, applet, object, iframe,
-h1, h2, h3, h4, h5, h6, p, blockquote, pre,
-a, abbr, acronym, address, big, cite, code,
-del, dfn, em, img, ins, kbd, q, s, samp,
-small, strike, strong, sub, sup, tt, var,
-b, u, i, center,
-dl, dt, dd, ol, ul, li,
-fieldset, form, label, legend,
-table, caption, tbody, tfoot, thead, tr, th, td,
-article, aside, canvas, details, embed, 
-figure, figcaption, footer, header, hgroup, 
-menu, nav, output, ruby, section, summary,
-time, mark, audio, video {
-	margin: 0;
-	padding: 0;
-	border: 0;
-	font-size: 100%;
-	font: inherit;
-	vertical-align: baseline;
+html,
+body,
+div,
+span,
+applet,
+object,
+iframe,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+blockquote,
+pre,
+a,
+abbr,
+acronym,
+address,
+big,
+cite,
+code,
+del,
+dfn,
+em,
+img,
+ins,
+kbd,
+q,
+s,
+samp,
+small,
+strike,
+strong,
+sub,
+sup,
+tt,
+var,
+b,
+u,
+i,
+center,
+dl,
+dt,
+dd,
+ol,
+ul,
+li,
+fieldset,
+form,
+label,
+legend,
+table,
+caption,
+tbody,
+tfoot,
+thead,
+tr,
+th,
+td,
+article,
+aside,
+canvas,
+details,
+embed,
+figure,
+figcaption,
+footer,
+header,
+hgroup,
+menu,
+nav,
+output,
+ruby,
+section,
+summary,
+time,
+mark,
+audio,
+video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 100%;
+  font: inherit;
+  vertical-align: baseline;
   box-sizing: border-box;
 }
+
 /* HTML5 display-role reset for older browsers */
-article, aside, details, figcaption, figure, 
-footer, header, hgroup, menu, nav, section {
-	display: block;
+article,
+aside,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+menu,
+nav,
+section {
+  display: block;
 }
+
 body {
-  font-family: sans-serif;
-	font-size: 86%;
+  font-family: var(--baseFont);
+  font-size: 86%;
   line-height: 1.5em;
   color: black;
   background-color: var(--medium);
 }
-ol, ul {
-	list-style: none;
+
+ol,
+ul {
+  list-style: none;
 }
-blockquote, q {
-	quotes: none;
+
+blockquote,
+q {
+  quotes: none;
 }
-blockquote:before, blockquote:after,
-q:before, q:after {
-	content: '';
-	content: none;
+
+blockquote:before,
+blockquote:after,
+q:before,
+q:after {
+  content: '';
+  content: none;
 }
+
 table {
-	border-collapse: collapse;
-	border-spacing: 0;
+  border-collapse: collapse;
+  border-spacing: 0;
 }
-h1, h2, h3, h4{
-    margin: .68em 0 .34em;
+
+h1,
+h2,
+h3,
+h4 {
+  padding: .34em 0;
 }
-h1{
-    font-size: 2em;
+
+h1 {
+  font-size: 2em;
 }
-h2{
-    font-size: 1.68em;
+
+h2 {
+  font-size: 1.68em;
 }
-h3{
-    font-size: 1.34em;
+
+h3 {
+  font-size: 1.34em;
 }
-h4{
-    font-size: 1.17em;
+
+h4 {
+  font-size: 1.17em;
 }
-p{
-  margin: .17em 0;
+
+p {
+  padding: .17em 0;
 }
-b{
-    font-weight: bold;
+
+b {
+  font-weight: bold;
 }
-i{
-    font-style: italic;
+
+i {
+  font-style: italic;
 }
-button{
+
+button {
   cursor: pointer;
   border-radius: .34em;
   background-color: var(--bright);
   padding: .34em .68em;
-  margin: .34em;
+  margin: 0 .34em;
   border: none;
   color: white;
 }
-button:hover{
+
+button:hover {
   background-color: var(--dark);
 }
-a{
+
+a {
   cursor: pointer;
   text-decoration: none;
   color: var(--bright);
 }
-a:hover{
+
+a:hover {
   color: var(--dark);
 }
